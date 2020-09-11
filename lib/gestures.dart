@@ -103,3 +103,7 @@ mixin ScaleDetector on Game {
 mixin HoverDetector on Game {
   void onHover(PointerHoverEvent event) {}
 }
+
+mixin ScrollDetector on Game {
+  void onScroll(PointerScrollEvent event) {}
+}

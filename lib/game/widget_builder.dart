@@ -22,7 +22,8 @@ bool _hasAdvancedGesturesDetectors(Game game) =>
     game is MultiTouchDragDetector ||
     game is HasTapableComponents;
 
-bool _hasMouseDetectors(Game game) => game is HoverDetector;
+bool _hasMouseDetectors(Game game) =>
+    game is HoverDetector || game is ScrollDetector;
 
 class _GenericTapEventHandler {
   void Function(int pointerId) onTap;
@@ -208,7 +209,12 @@ Widget _applyBasicGesturesDetectors(Game game, Widget child) {
 
 Widget _applyMouseDetectors(game, Widget child) {
   return MouseRegion(
-    child: child,
+    child: Listener(
+        child: child,
+        onPointerSignal: (event) =>
+            game is ScrollDetector && event is PointerScrollEvent
+                ? game.onScroll(event)
+                : null),
     onHover: game is HoverDetector ? game.onHover : null,
   );
 }
